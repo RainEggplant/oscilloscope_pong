@@ -1,0 +1,4 @@
+{
+  "systemverilog.compileOnSave": true,
+  "systemverilog.launchConfiguration": "\"D:\\Program Files\\verilator\\verilator\" -sv --lint-only --language 1800-2012 --Wall -y \"F:/dev/hardware/vivado/oscilloscope_pong/src/design_src\"",
+}
