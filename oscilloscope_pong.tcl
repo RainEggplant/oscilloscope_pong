@@ -112,6 +112,7 @@ set_property -name "part" -value "xc7a35tcsg324-1" -objects $obj
 set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
+set_property -name "webtalk.xsim_launch_sim" -value "4" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -123,8 +124,10 @@ set obj [get_filesets sources_1]
 set files [list \
  [file normalize "${origin_dir}/src/design_src/bcd_to_ssd.v"] \
  [file normalize "${origin_dir}/src/design_src/bin_to_bcd.v"] \
+ [file normalize "${origin_dir}/src/design_src/border_view.v"] \
  [file normalize "${origin_dir}/src/design_src/clk_gen.v"] \
  [file normalize "${origin_dir}/src/design_src/debounce.v"] \
+ [file normalize "${origin_dir}/src/design_src/dual_slope_adc.v"] \
  [file normalize "${origin_dir}/src/design_src/game_ctr.v"] \
  [file normalize "${origin_dir}/src/design_src/output_view.v"] \
  [file normalize "${origin_dir}/src/design_src/plate_view.v"] \
@@ -177,9 +180,46 @@ set obj [get_filesets sim_1]
 set_property -name "top" -value "top" -objects $obj
 set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
 
+# Create 'plate_view_tb' fileset (if not found)
+if {[string equal [get_filesets -quiet plate_view_tb] ""]} {
+  create_fileset -simset plate_view_tb
+}
+
+# Set 'plate_view_tb' fileset object
+set obj [get_filesets plate_view_tb]
+set files [list \
+ [file normalize "${origin_dir}/src/simu_src/plate_view_tb.v"] \
+]
+add_files -norecurse -fileset $obj $files
+
+# Set 'plate_view_tb' fileset file properties for remote files
+# None
+
+# Set 'plate_view_tb' fileset file properties for local files
+# None
+
+# Set 'plate_view_tb' fileset properties
+set obj [get_filesets plate_view_tb]
+set_property -name "top" -value "plate_view_tb" -objects $obj
+set_property -name "top_auto_set" -value "0" -objects $obj
+set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
+
 # Set 'utils_1' fileset object
 set obj [get_filesets utils_1]
-# Empty (no sources present)
+set files [list \
+ [file normalize "${origin_dir}/vivado_project/oscilloscope_pong.srcs/utils_1/imports/impl_1/top_routed.dcp"] \
+]
+add_files -norecurse -fileset $obj $files
+
+# Set 'utils_1' fileset file properties for remote files
+set file "$origin_dir/vivado_project/oscilloscope_pong.srcs/utils_1/imports/impl_1/top_routed.dcp"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets utils_1] [list "*$file"]]
+set_property -name "netlist_only" -value "0" -objects $file_obj
+
+
+# Set 'utils_1' fileset file properties for local files
+# None
 
 # Set 'utils_1' fileset properties
 set obj [get_filesets utils_1]
@@ -430,6 +470,8 @@ set_property -name "display_name" -value "impl_1_post_route_phys_opt_report_bus_
 }
 set obj [get_runs impl_1]
 set_property -name "part" -value "xc7a35tcsg324-1" -objects $obj
+set_property -name "auto_incremental_checkpoint" -value "1" -objects $obj
+set_property -name "incremental_checkpoint" -value "$proj_dir/oscilloscope_pong.srcs/utils_1/imports/impl_1/top_routed.dcp" -objects $obj
 set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
 set_property -name "steps.write_bitstream.args.readback_file" -value "0" -objects $obj
 set_property -name "steps.write_bitstream.args.verbose" -value "0" -objects $obj

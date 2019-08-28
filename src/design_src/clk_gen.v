@@ -1,27 +1,27 @@
-module clk_gen(sysclk, clk_ctr, clk_scan);
+module clk_gen(sysclk, clk_100k, clk_ctr);
 input sysclk;
-output clk_ctr, clk_scan;
+output reg clk_100k;
+output reg clk_ctr;
 
-reg clk_ctr, clk_scan;
-reg [16 : 0] count_ctr; // 500 Hz
-reg [13 : 0] count_scan; // 5 kHz
+reg [8:0] count_100k; // 100 kHz
+reg [15:0] count_ctr; // 1 kHz
 
 always @ (posedge sysclk)
   begin
-    if (count_ctr >= 99_999)
+    if (count_100k >= 9'd499)
+      begin
+        clk_100k <= ~clk_100k;
+        count_100k <= 0;
+      end
+    else
+      count_100k <= count_100k + 1;
+
+    if (count_ctr >= 16'd49_999)
       begin
         clk_ctr <= ~clk_ctr;
         count_ctr <= 0;
       end
     else
       count_ctr <= count_ctr + 1;
-
-    if (count_scan >= 9_999)
-      begin
-        clk_scan <= ~clk_scan;
-        count_scan <= 0;
-      end
-    else
-      count_scan <= count_scan + 1;
   end
 endmodule

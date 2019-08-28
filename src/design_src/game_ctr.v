@@ -44,8 +44,8 @@ always @ (posedge clk or posedge reset)
             gameover <= 0;
             x_b <= X_MAX / 2;
             y_b <= Y_MAX / 2;
-            v_x <= 0;
-            v_y <= 0;
+            v_x <= 1;
+            v_y <= 1;
             counter <= 0;
             score <= 8'd0;
             tick <= 0;

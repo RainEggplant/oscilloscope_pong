@@ -5,6 +5,10 @@ create_clock -period 10.000 -name CLK -waveform {0.000 5.000} [get_ports {sysclk
 # Button S2
 set_property -dict {PACKAGE_PIN R15 IOSTANDARD LVCMOS33} [get_ports {reset}]
 
+# Communicate with ADC analog circuit
+set_property -dict {PACKAGE_PIN H17 IOSTANDARD LVCMOS33} [get_ports {select_v_ref}]
+set_property -dict {PACKAGE_PIN K13 IOSTANDARD LVCMOS33} [get_ports {is_neg_v}]
+
 # Seven-segment display
 set_property -dict {PACKAGE_PIN B4 IOSTANDARD LVCMOS33} [get_ports {ssd[0]}]
 set_property -dict {PACKAGE_PIN A4 IOSTANDARD LVCMOS33} [get_ports {ssd[1]}]
