@@ -10,11 +10,11 @@ output reg [7:0] score;
 
 parameter X_MAX = 255;
 parameter Y_MAX = 220;
-parameter PLATE_HALFWIDTH = 15;
+parameter PLATE_HALFWIDTH = 21;
 
-// lower value stands for higher difficulty
-wire [3:0] difficulty;
-assign difficulty = score < 8'd15 ? 4'd15 - score[3:0] : 4'd1;
+// the lower, the harder
+wire [3:0] cycle_between_step;
+assign cycle_between_step = score < 8'd15 ? 4'd15 - score[3:0] : 4'd1;
 reg [3:0] counter;
 
 // plate range
@@ -55,7 +55,7 @@ always @ (posedge clk or posedge reset)
       end
     else
       begin
-        if (counter >= difficulty)
+        if (counter >= cycle_between_step)
           begin
             counter <= 0;
             if ((y_b == 0 && ~v_y) || (y_b == Y_MAX && v_y))

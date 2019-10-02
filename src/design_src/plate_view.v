@@ -7,7 +7,7 @@ output [7:0] x_p;
 output reg [7:0] y_p;
 
 parameter Y_MAX = 220;
-parameter PLATE_HALFWIDTH = 15;
+parameter PLATE_HALFWIDTH = 21;
 
 // plate range
 wire [7:0] y_p_max;
